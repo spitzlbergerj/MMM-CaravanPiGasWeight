@@ -87,6 +87,7 @@ getDom: function(){
 
 		var rowSensor = document.createElement("td");
 		rowSensor.className = 'sensorName';
+		rowSensor.style.borderBottom = '1px dotted #ffffff';
 		rowSensor.appendChild(document.createTextNode(this.valueList[i]["name"]));
 		
 		var rowWeight = document.createElement("td");
@@ -101,9 +102,6 @@ getDom: function(){
 		rowDate.className = 'sensorDate';
 		rowDate.appendChild(document.createTextNode(this.valueList[i]["datetime"]));
 
-		var rowEmpty = document.createElement("td");
-		rowEmpty.className = 'sensorEmpty';
-		
 		if (this.config.style == "lines") {
 			var row = document.createElement("tr");
 			row.className = 'sensorContainer';
@@ -137,6 +135,10 @@ getDom: function(){
 			row1.align = 'center';
 			row1.vAlign = 'top';
 			
+			if (this.config.style == "boxlines" ) 
+			{
+				rowSensor.colSpan = '2';
+			}
 			row1.appendChild(rowSensor);
 			
 			var row2 = document.createElement("tr");
@@ -184,14 +186,9 @@ getDom: function(){
 				
 				if (this.config.style == "boxlines" ) 
 				{
-					row4.appendChild(rowEmpty);
-					row4.appendChild(rowDate);
-					row4.appendChild(rowEmpty);
+					rowDate.colSpan = '3';
 				}
-				else
-				{
-					row4.appendChild(rowDate);
-				}
+				row4.appendChild(rowDate);
 				
 				tableInner.appendChild(row4);
 			}
