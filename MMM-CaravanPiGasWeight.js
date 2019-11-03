@@ -74,7 +74,7 @@ getDom: function(){
 	var table = document.createElement("table");
 	table.border = 0;
 	
-	if (this.config.style == "boxes") {
+	if (this.config.style == "boxes" || this.config.style == "boxlines" ) {
 		var boxRow = document.createElement("tr");
 		boxRow.className = 'sensorBoxRow';
 		boxRow.vAlign = 'top';
@@ -85,34 +85,39 @@ getDom: function(){
 		var weightStr = this.prepareAttribute("WEIGHT", this.valueList[i]["weight"], this.config.weightPrecision, this.config.weightUnit);
 		var levelStr = this.prepareAttribute("LEVEL", this.valueList[i]["level"], this.config.levelPrecision, this.config.levelUnit);
 
+		var rowSensor = document.createElement("td");
+		rowSensor.className = 'sensorName';
+		rowSensor.appendChild(document.createTextNode(this.valueList[i]["name"]));
+		
+		var rowWeight = document.createElement("td");
+		rowWeight.className = 'sensorWeight';
+		rowWeight.appendChild(document.createTextNode(weightStr));
+		
+		var rowLevel = document.createElement("td");
+		rowLevel.className = 'sensorLevel';
+		rowLevel.appendChild(document.createTextNode(levelStr));
+		
+		var rowDate = document.createElement("td");
+		rowDate.className = 'sensorDate';
+		rowDate.appendChild(document.createTextNode(this.valueList[i]["datetime"]));
+
+		var rowEmpty = document.createElement("td");
+		rowEmpty.className = 'sensorEmpty';
+		
 		if (this.config.style == "lines") {
 			var row = document.createElement("tr");
 			row.className = 'sensorContainer';
 			row.vAlign = 'top';
 			
-			var rowSensor = document.createElement("td");
-			rowSensor.className = 'sensorName';
 			rowSensor.width = '120px';
-			rowSensor.appendChild(document.createTextNode(this.valueList[i]["name"]));
-			
-			var rowWeight = document.createElement("td");
-			rowWeight.className = 'sensorWeight';
 			rowWeight.width = '60px';
-			rowWeight.appendChild(document.createTextNode(weightStr));
-			
-			var rowLevel = document.createElement("td");
-			rowWeight.className = 'sensorLevel';
-			rowWeight.width = '60px';
-			rowWeight.appendChild(document.createTextNode(levelStr));
-			
-			var rowDate = document.createElement("td");
-			rowDate.className = 'sensorDate';
+			rowLevel.width = '60px';
 			rowDate.width = '60px';
-			rowDate.appendChild(document.createTextNode(this.valueList[i]["datetime"]));
 			
 			// Building of the table row
 			row.appendChild(rowSensor);
 			row.appendChild(rowWeight);
+			row.appendChild(rowLevel);
 			
 			if(this.config.showDate === true) {
 				row.appendChild(rowDate);
@@ -120,9 +125,9 @@ getDom: function(){
 			
 			table.appendChild(row);
 		}
-		else if (this.config.style == "boxes") {
+		else if (this.config.style == "boxes" || this.config.style == "boxlines" ) {
 			var boxRowElement = document.createElement("td");
-			boxRowElement.style.padding = '20px';
+			boxRowElement.className = 'sensorBoxRowElement';
 			
 			var tableInner = document.createElement("table");
 			tableInner.style.border= '1px solid #ffffff';
@@ -132,10 +137,6 @@ getDom: function(){
 			row1.align = 'center';
 			row1.vAlign = 'top';
 			
-			var rowSensor = document.createElement("td");
-			rowSensor.className = 'sensorName';
-			rowSensor.appendChild(document.createTextNode(this.valueList[i]["name"]));
-			
 			row1.appendChild(rowSensor);
 			
 			var row2 = document.createElement("tr");
@@ -143,41 +144,56 @@ getDom: function(){
 			row2.align = 'center';
 			row2.vAlign = 'top';
 			
-			var rowWeight = document.createElement("td");
-			rowWeight.className = 'sensorWeight';
-			rowWeight.appendChild(document.createTextNode(weightStr));
+			if (this.config.style == "boxes" ) 
+			{
+				row2.appendChild(rowWeight);
 			
-			row2.appendChild(rowWeight);
-			
-			var row3 = document.createElement("tr");
-			row3.className = 'sensorContainer';
-			row3.align = 'center';
-			row3.vAlign = 'top';
-			
-			var rowLevel = document.createElement("td");
-			rowLevel.className = 'sensorLevel';
-			rowLevel.appendChild(document.createTextNode(levelStr));
-			
-			row3.appendChild(rowLevel);
-			
-			var row4 = document.createElement("tr");
-			row4.className = 'sensorContainer';
-			row4.align = 'center';
-			row4.vAlign = 'top';
-			
-			var rowDate = document.createElement("td");
-			rowDate.className = 'sensorDate';
-			rowDate.appendChild(document.createTextNode(this.valueList[i]["datetime"]));
-			
-			row4.appendChild(rowDate);
-			
-			// Building of the table rows
-			tableInner.appendChild(row1);
-			tableInner.appendChild(row2);
-			tableInner.appendChild(row3);
-			
-			if(this.config.showDate === true) {
-				tableInner.appendChild(row3);
+				var row3 = document.createElement("tr");
+				row3.className = 'sensorContainer';
+				row3.align = 'center';
+				row3.vAlign = 'top';
+				
+				row3.appendChild(rowLevel);
+				
+				// Building of the table rows
+				tableInner.appendChild(row1);
+				tableInner.appendChild(row2);
+				tableInner.appendChild(row3);			
+			}
+			else
+			{
+				rowWeight.width = '60px';
+				rowLevel.width = '60px';
+				rowDate.width = '60px';
+				
+				// Building of the table row
+				row2.appendChild(rowWeight);
+				row2.appendChild(rowLevel);
+				
+				// Building the table 
+				tableInner.appendChild(row1);
+				tableInner.appendChild(row2);
+			}	
+				
+			if(this.config.showDate === true) 
+			{
+				var row4 = document.createElement("tr");
+				row4.className = 'sensorContainer';
+				row4.align = 'center';
+				row4.vAlign = 'top';
+				
+				if (this.config.style == "boxlines" ) 
+				{
+					row4.appendChild(rowEmpty);
+					row4.appendChild(rowDate);
+					row4.appendChild(rowEmpty);
+				}
+				else
+				{
+					row4.appendChild(rowDate);
+				}
+				
+				tableInner.appendChild(row4);
 			}
 			boxRowElement.appendChild(tableInner)
 			boxRow.appendChild(boxRowElement);
@@ -185,7 +201,7 @@ getDom: function(){
 		i+=1;
 	}
 	
-	if (this.config.style == "boxes") {
+	if (this.config.style == "boxes" || this.config.style == "boxlines" ) {
 		table.appendChild(boxRow);
 	}
 
