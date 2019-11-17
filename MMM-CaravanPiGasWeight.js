@@ -14,7 +14,7 @@ Module.register("MMM-CaravanPiGasWeight",{
 
 defaults:{
 	valueDir: "/home/pi/CaravanPi/values",
-	updateInterval: 10000, // milliseconds
+	updateInterval: 60000, // milliseconds
 	weightUnit: " Gramm",
 	weightPrecision: 2,
 	levelUnit: " %",
