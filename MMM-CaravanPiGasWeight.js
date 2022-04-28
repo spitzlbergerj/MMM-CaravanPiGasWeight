@@ -22,8 +22,12 @@ defaults:{
 	showDate: true,
 	sensors: [
 		{
-			name: "Gasflasche",
-			file: "gasScale",
+			name: "Gasflasche 1",
+			file: "gasScale1",
+		},
+		{
+			name: "Gasflasche 2",
+			file: "gasScale2",
 		},
 	],
 	localeStr: 'de-DE',
@@ -214,7 +218,7 @@ socketNotificationReceived: function(notification, payload){
 	switch(notification) {
 		case "VALUES":
 			this.valueList = payload;
-			// Log.log('valueList in socketNotificationReceived: ', this.valueList);
+			Log.log('valueList in socketNotificationReceived: ', this.valueList);
 			this.updateDom();
 			break
 	}

@@ -63,9 +63,13 @@ module.exports = NodeHelper.create({
 		var i = 0;
 		
 		if (err) {
-			console.error('node_helper - fillValueList - Fehler:', err, stderr);
+			// console.error('node_helper - fillValueList - Fehler:', err, stderr);
 			return;
 		}
+
+		// console.error('node_helper - fillValueList - stdout:', stdout, '<<');
+		// console.error('node_helper - fillValueList - stderr:', stderr, '<<');
+
 		var resSplit = stdout.split(' ');
 		var sensorID = resSplit[0];
 		
